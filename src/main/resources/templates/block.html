@@ -27,7 +27,7 @@
         <p class="lead" >Nonce: <small th:text="${block.Header.Nonce}"/> </p>
         <p class="lead" >This block contains <span th:text="${block.Transactions.size()}"/> transaction<span th:if="${block.Transactions.size()>1}">s</span>:</p>
         <div class="list-group">
-            <a th:each="tsxn, it : ${block.Transactions}" class="list-group-item list-group-item-action" th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-secondary'}" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())})}" >
+            <a th:each="tsxn, it : ${block.Transactions}" class="list-group-item list-group-item-action" th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-info'}" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())})}" >
                 <img th:src="${it.index==0?'/icons/cash-stack.svg':'/icons/cash.svg'}" th:alt="${it.index==0?'Coinbase Transaction':'Transaction'}"/>
                 <span th:text="'Transaction ' + ${it.index} + ': ' "/>
                 <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())}"/>
@@ -42,7 +42,6 @@
             <a href="#" class="list-group-item list-group-item-action list-group-item-dark">This is a dark list group item</a>-->
         </div>
     </div>
-    <p class="lead"><abbr title="Unspent Transaction Output" class="initialism">UTXO</abbr></p>
 </main>
 
 

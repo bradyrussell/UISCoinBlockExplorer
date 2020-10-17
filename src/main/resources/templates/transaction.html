@@ -16,21 +16,24 @@
     <!-- end alerts -->
 
     <div class="jumbotron">
-        <h1 th:text="'Transaction '+${transactionHash}"/>
+        <h1>Transaction</h1>
+        <span th:text="${transactionHash}"/><br/><br/>
         <!--<p class="lead"><span style="font-weight: bold" th:text="${#strings.substring(blockHash,0,(block.Header.DifficultyTarget*(4.0/3.0)))}"/><span th:text="${#strings.substring(blockHash,(block.Header.DifficultyTarget*(4.0/3.0)))}"/></p>-->
         <a class="btn btn-primary" th:href="@{/block(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.getHash())})}" href="#" role="button"><img src="/icons/box.svg" alt="Block"> Go to Block</a>
         <!-- <a class="btn btn-primary" th:href="@{/block(height=${T(Math).max(block.Header.BlockHeight - 1, 0)})}" href="#" role="button">Previous</a><a class="btn btn-primary" th:href="@{/block(height=${T(Math).min(block.Header.BlockHeight + 1, T(com.bradyrussell.uiscoin.blockchain.BlockChain).Storage.BlockHeight)})}" href="#" role="button">Next</a>-->
-        <p class="lead">Time: <small
+        <p class="lead" th:if="${bIsCoinbaseTransaction}">Coinbase Transaction</p>
+
+        <p class="lead">Locked Until Time: <small
                 th:text="${transaction.TimeStamp} + ' (' + ${#dates.format(transaction.TimeStamp*1000)} + ')'"/></p>
 
-        <p class="lead">Fees: <small th:text="${transaction.fees+' Satoshis ('+T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins(transaction.fees)+' UISCoin)'}"/></p>
+        <p class="lead" th:unless="${bIsCoinbaseTransaction}">Fees: <small th:text="${transaction.fees+' Satoshis ('+T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins(transaction.fees)+' UISCoin)'}"/></p>
 
         <p class="lead">This transaction has <span th:text="${transaction.Inputs.size()}"/> input<span
                 th:if="${transaction.Inputs.size()>1}">s</span>:</p>
         <div class="list-group">
              <span th:each="input, it : ${transaction.Inputs}">
                  <a class="list-group-item list-group-item-action"
-                    th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-secondary'}"
+                    th:classappend="${(it.index == -1 ? 'list-group-item-primary':'list-group-item-info') + ' ' + (bIsCoinbaseTransaction ? 'disabled':'')}"
                     th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.InputHash)})}">
                      <img src="icons/play-fill.svg" alt="Input"/>
                      <span th:text="'Input ' + ${it.index} + ': ' "/>
@@ -38,7 +41,7 @@
                     <!--<span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins()} + ' UISCoin)'"/>-->
                  </a>
                  <a class="list-group-item list-group-item-action"
-                                     th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-secondary'}"
+                                     th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}"
                                      th:href="@{/script(script=${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.UnlockingScript)})}">
                      <img src="icons/code-square.svg" alt="Input"/>
                      <span th:text="'Input ' + ${it.index} + ' Unlocking Script: ' "/>
@@ -46,7 +49,7 @@
 
                  </a>
              </span>
-            <!--        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">This is a secondary list group item</a>
+            <!--        <a href="#" class="list-group-item list-group-item-action list-group-item-info">This is a secondary list group item</a>
                     <a href="#" class="list-group-item list-group-item-action list-group-item-success">This is a success list group item</a>
                     <a href="#" class="list-group-item list-group-item-action list-group-item-danger">This is a danger list group item</a>
                     <a href="#" class="list-group-item list-group-item-action list-group-item-warning">This is a warning list group item</a>
@@ -59,27 +62,27 @@
         <div class="list-group">
              <span th:each="output, it : ${transaction.Outputs}"><!-- maybe color outputs whether they are spent -->
                  <a class="list-group-item list-group-item-action"
-                    th:classappend="${(it.index == 0 ? 'list-group-item-primary':'list-group-item-secondary') + ' ' + (unspent.get(it.index) ? 'disabled':'')}"
+                    th:classappend="${(it.index == -1 ? 'list-group-item-primary':'list-group-item-info') + ' ' + (unspent.get(it.index) ? 'disabled':'')}"
                     href="#">
                      <img src="icons/play.svg" alt="Output"/>
                      <span th:text="'Output ' + ${it.index} + ': ' "/>
                      <span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins(output.Amount)} + ' UISCoin)'"/>
                  </a>
                  <a class="list-group-item list-group-item-action"
-                    th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-secondary'}"
+                    th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}"
                     th:href="@{/script(script=${T(com.bradyrussell.uiscoin.Util).Base64Encode(output.LockingScript)})}">
                      <img src="icons/code-square.svg" alt="Input"/>
                      <span th:text="'Output ' + ${it.index} + ' Locking Script: ' "/>
                      <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(output.LockingScript)}"/>
                  </a>
                  <a th:if="${pubKeyHashes.get(it.index) != null}" class="list-group-item list-group-item-action"
-                                     th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-secondary'}"
+                                     th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}"
                                      th:href="@{/address(address= ${pubKeyHashes.get(it.index)})}">
                      <img src="icons/wallet2.svg" alt="Input"/>
                     <small  th:text="'Script Pays to UISCoin Address: ' + ${pubKeyHashes.get(it.index)} + ''"/>
                  </a>
              </span>
-            <!--        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">This is a secondary list group item</a>
+            <!--        <a href="#" class="list-group-item list-group-item-action list-group-item-info">This is a secondary list group item</a>
                     <a href="#" class="list-group-item list-group-item-action list-group-item-success">This is a success list group item</a>
                     <a href="#" class="list-group-item list-group-item-action list-group-item-danger">This is a danger list group item</a>
                     <a href="#" class="list-group-item list-group-item-action list-group-item-warning">This is a warning list group item</a>
@@ -88,7 +91,7 @@
                     <a href="#" class="list-group-item list-group-item-action list-group-item-dark">This is a dark list group item</a>-->
         </div>
     </div>
-    <p class="lead"><abbr title="Unspent Transaction Output" class="initialism">UTXO</abbr></p>
+<!--    <p class="lead"><abbr title="Unspent Transaction Output" class="initialism">UTXO</abbr></p>-->
 </main>
 
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.concurrent.BlockingQueue;
@@ -28,10 +29,16 @@ public class TransactionController {
         }
 
         if (transaction != null) {
+            Block blockWithTransaction = BlockChain.get().getBlockWithTransaction(transaction.getHash());
+
             model.addAttribute("transaction", transaction);
-            model.addAttribute("block", BlockChain.get().getBlockWithTransaction(transaction.getHash()));
+            model.addAttribute("block", blockWithTransaction);
             model.addAttribute("transactionDate", new Date(transaction.TimeStamp));
             model.addAttribute("transactionHash", Util.Base64Encode(transaction.getHash()));
+
+            for (int i = 0; i < blockWithTransaction.Transactions.size(); i++) {
+                if(Arrays.equals(transaction.getHash(), blockWithTransaction.Transactions.get(i).getHash())) model.addAttribute("bIsCoinbaseTransaction", i == 0);
+            }
 
             ArrayList<String> pubKeyHashes = new ArrayList<>();
 

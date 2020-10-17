@@ -20,14 +20,22 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto justify-content-center">
             <li class="nav-item active">
+                <li class="nav-item">
+                    <a class="btn mr-1 btn-warning" th:href="@{/mempool}" href="#" role="button"><img src="/icons/hdd-rack.svg" alt="MemPool"> MemPool</a>
+                </li>
+            </li>
 
-            </li>
-            <!--<li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li>-->
+                <a class="btn mr-1 btn-success"  th:href="@{/block(height=0)}" href="#" role="button"><img src="/icons/box-arrow-down.svg" alt="Genesis Block"> Genesis Block</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="btn mr-1 btn-primary"  th:href="@{/block(height=${T(com.bradyrussell.uiscoin.blockchain.BlockChain).Storage.BlockHeight})}" href="#" role="button"><img src="/icons/box-arrow-up.svg" alt="Latest Block"> Latest Block</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="disabled mr-1 btn btn-info" href="#" role="button"><img src="/icons/wallet.svg" alt="Wallet"> Web Wallet</a>
+            </li>
         </ul>
         <form class="form-inline mt-2 mt-md-0" action="/search" method="post">
             <div class="btn-group btn-group-toggle mr-sm-2" data-toggle="buttons">
@@ -64,6 +72,7 @@
 <div th:fragment="alerts" >
     <div th:each="alert : ${alerts}" th:classappend="${alert.AlertClass}" class="alert alert-dismissible fade show" role="alert">
         <span th:text="${alert.Content}">Content</span>
+        <span th:if="${alert.HTML != null}" th:utext="${alert.HTML}">HTML Content</span>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

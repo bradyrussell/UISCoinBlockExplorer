@@ -23,11 +23,11 @@
         <p class="lead" >This address has <span th:text="${utxos.size()}"/> unspent output<span th:if="${utxos.size()!=1}">s</span>:</p>
 
         <div class="list-group">
-            <a th:each="utxo, it : ${utxos}" class="list-group-item list-group-item-action" th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-secondary'}" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(utxo.TransactionHash)})}" >
+            <a th:each="utxo, it : ${utxos}" class="list-group-item list-group-item-action" th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(utxo.TransactionHash)})}" >
                 <img src="icons/play.svg" alt="Output"/>
                 <span th:text="'UTXO ' + ${it.index} + ': ' "/>
                 <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(utxo.TransactionHash)}"/>
-                <small th:text="${' Index'+utxo.Index}"/>
+                <small th:text="${' Index '+utxo.Index}"/>
                 <span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins(utxo.Amount)} + ' UISCoin)'"/>
             </a>
     <!--        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">This is a secondary list group item</a>

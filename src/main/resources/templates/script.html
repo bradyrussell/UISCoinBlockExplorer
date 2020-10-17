@@ -16,12 +16,12 @@
     <!-- end alerts -->
 
     <div class="jumbotron">
-        <!-- todo use identicons for merkle root, and other hashes / addresses -->
         <h1>Script Decompilation</h1>
+        <a class="btn btn-primary" href="https://bradyrussell.github.io/UISCoin/com/bradyrussell/uiscoin/script/ScriptOperator.html" role="button"><img src="/icons/diagram-3.svg" alt="Documentation"> Go to Documentation</a>
         <p class="lead">
         <code>
             <div th:each="scriptOp, it : ${scriptText}">
-                <span th:title="${it.index}" class="initialism" th:text="${scriptOp}"></span>
+                <abbr th:title="${it.index}" class="initialism" th:text="${scriptOp}"></abbr>
                 <br/>
             </div>
         </code>
