@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="fragments/components :: head"></head>
+
+<body>
+
+<!-- nav -->
+<nav th:replace="fragments/components :: navbar"></nav>
+<!-- end nav -->
+
+<main role="main" class="container">
+    <!-- alerts -->
+    <nav th:replace="fragments/components :: alerts"></nav>
+    <!-- end alerts -->
+
+    <div class="jumbotron">
+        <h1>HEADER</h1>
+        <p class="lead">This example is a quick exercise to illustrate how the top-aligned navbar works. As you scroll, this navbar remains in its original position and moves with the rest of the page.</p>
+    </div>
+</main>
+
+
+<!-- script -->
+<div th:replace="fragments/components :: scripts"></div>
+<!-- end script -->
+
+</body>
+</html>

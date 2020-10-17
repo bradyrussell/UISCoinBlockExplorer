@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="fragments/components :: head"></head>
+
+<body>
+
+<!-- nav -->
+<nav th:replace="fragments/components :: navbar"></nav>
+<!-- end nav -->
+
+<main role="main" class="container">
+    <!-- alerts -->
+    <nav th:replace="fragments/components :: alerts"></nav>
+    <!-- end alerts -->
+
+    <div class="jumbotron">
+        <h1 th:text="'Block '+${block.Header.BlockHeight}"/>
+        <p class="lead"><span style="font-weight: bold" th:text="${#strings.substring(blockHash,0,(block.Header.DifficultyTarget*(4.0/3.0)))}"/><span th:text="${#strings.substring(blockHash,(block.Header.DifficultyTarget*(4.0/3.0)))}"/></p>
+
+        <a class="btn btn-primary" th:href="@{/block(height=${T(Math).max(block.Header.BlockHeight - 1, 0)})}" href="#" role="button">Previous</a><a class="btn btn-primary" th:href="@{/block(height=${T(Math).min(block.Header.BlockHeight + 1, T(com.bradyrussell.uiscoin.blockchain.BlockChain).Storage.BlockHeight)})}" href="#" role="button">Next</a>
+        <p class="lead" >Time: <small th:text="${block.Header.Time} + ' (' + ${#dates.format(block.Header.Time*1000)} + ')'"/> </p>
+        <p class="lead">Previous Block: <small><span th:if="${block.Header.BlockHeight == 0}" th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashPreviousBlock) + ' (Not a real block)'}"/> <a th:unless="${block.Header.BlockHeight == 0}" th:href="@{/block(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashPreviousBlock)})}" th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashPreviousBlock)}" /></small> </p>
+        <p class="lead" >Merkle Root: <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashMerkleRoot)}"/> </p>
+        <p class="lead" >Difficulty Target: <small th:text="${block.Header.DifficultyTarget} + ' bytes (' + ${#conversions.convert(block.Header.DifficultyTarget*(4.0/3.0), 'Integer')} + ' characters)'"/> </p>
+        <p class="lead" >Nonce: <small th:text="${block.Header.Nonce}"/> </p>
+        <p class="lead" >This block contains <span th:text="${block.Transactions.size()}"/> transaction<span th:if="${block.Transactions.size()>1}">s</span>:</p>
+        <div class="list-group">
+            <a th:each="tsxn, it : ${block.Transactions}" class="list-group-item list-group-item-action" th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-secondary'}" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())})}" >
+                <img th:src="${it.index==0?'/icons/cash-stack.svg':'/icons/cash.svg'}" th:alt="${it.index==0?'Coinbase Transaction':'Transaction'}"/>
+                <span th:text="'Transaction ' + ${it.index} + ': ' "/>
+                <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())}"/>
+                <span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins(tsxn.outputTotal)} + ' UISCoin)'"/>
+            </a>
+    <!--        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">This is a secondary list group item</a>
+            <a href="#" class="list-group-item list-group-item-action list-group-item-success">This is a success list group item</a>
+            <a href="#" class="list-group-item list-group-item-action list-group-item-danger">This is a danger list group item</a>
+            <a href="#" class="list-group-item list-group-item-action list-group-item-warning">This is a warning list group item</a>
+            <a href="#" class="list-group-item list-group-item-action list-group-item-info">This is a info list group item</a>
+            <a href="#" class="list-group-item list-group-item-action list-group-item-light">This is a light list group item</a>
+            <a href="#" class="list-group-item list-group-item-action list-group-item-dark">This is a dark list group item</a>-->
+        </div>
+    </div>
+    <p class="lead"><abbr title="Unspent Transaction Output" class="initialism">UTXO</abbr></p>
+</main>
+
+
+<!-- script -->
+<div th:replace="fragments/components :: scripts"></div>
+<!-- end script -->
+
+</body>
+</html>
