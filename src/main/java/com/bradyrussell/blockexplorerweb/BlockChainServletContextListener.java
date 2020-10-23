@@ -3,10 +3,10 @@ package com.bradyrussell.blockexplorerweb;
 import com.bradyrussell.uiscoin.BlockChainStorageLevelDB;
 import com.bradyrussell.uiscoin.HTTP;
 import com.bradyrussell.uiscoin.MagicBytes;
-import com.bradyrussell.uiscoin.MagicNumbers;
-import com.bradyrussell.uiscoin.address.UISCoinKeypair;
-import com.bradyrussell.uiscoin.address.Wallet;
 import com.bradyrussell.uiscoin.blockchain.BlockChain;
+import com.bradyrussell.uiscoin.blockchain.exception.InvalidBlockException;
+import com.bradyrussell.uiscoin.blockchain.exception.NoSuchBlockException;
+import com.bradyrussell.uiscoin.blockchain.exception.NoSuchTransactionException;
 import com.bradyrussell.uiscoin.node.Node;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -30,7 +30,7 @@ public class BlockChainServletContextListener implements ServletContextListener 
     public void contextDestroyed(ServletContextEvent event) {
         System.out.println("CONTEXT DESTROYED - CLOSING BLOCKCHAIN");
         BlockChain.get().close();
-        SavePeers(uisCoinNode, peerlist);
+        SavePeers(uisCoinNode);
         uisCoinNode.Stop();
     }
  
@@ -50,7 +50,7 @@ public class BlockChainServletContextListener implements ServletContextListener 
 
     private static void SyncBlockChain() {
 
-        System.out.println("Starting node with " + SetupPeers(uisCoinNode, peerlist) + " peers.");
+        System.out.println("Starting node with " + SetupPeers(uisCoinNode) + " peers.");
 
         try { // need time to allow peer connections
             Thread.sleep(500);
@@ -84,15 +84,20 @@ public class BlockChainServletContextListener implements ServletContextListener 
             System.out.println("BlockChain synced.");
         }
 
-        boolean verify = BlockChain.Verify(0);
-        BlockChain.BuildUTXOSet(0);
+        boolean verify = false;
+        try {
+            verify = BlockChain.Verify(0);
+            BlockChain.BuildUTXOSet(0);
+        } catch (NoSuchBlockException | NoSuchTransactionException | InvalidBlockException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("Full BlockChain verification: " + verify);
         //if (!verify) System.exit(100); // todo disconnect that node and retry
     }
 
 
-    private static void SavePeers(Node node, Path peerlist) {
+    private static void SavePeers(Node node) {
         StringBuilder sb = new StringBuilder();
         for (InetAddress peerAddr : node.getPeers()) {
             sb.append(peerAddr.getHostAddress());
@@ -100,19 +105,19 @@ public class BlockChainServletContextListener implements ServletContextListener 
         }
 
         try {
-            Files.writeString(peerlist, sb.toString());
+            Files.writeString(BlockChainServletContextListener.peerlist, sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static int SetupPeers(Node node, Path peerlist) {
+    private static int SetupPeers(Node node) {
         List<String> connected = new ArrayList<>();
 
-        if (Files.exists(peerlist)) {
+        if (Files.exists(BlockChainServletContextListener.peerlist)) {
             System.out.println("Loading peerlist...");
             try {
-                List<String> peers = Files.readAllLines(peerlist);
+                List<String> peers = Files.readAllLines(BlockChainServletContextListener.peerlist);
 
                 for (String peer : peers) {
                     if (!peer.isEmpty() && !connected.contains(peer)) {

@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +21,19 @@ import java.util.List;
 public class MempoolController {
 
     @GetMapping("/mempool")
-    public String mempool(@RequestParam(name = "hash", required = false) String MempoolTransactionHash, Model model) {
+    public String mempool(@RequestParam(name = "hash", required = false) String MempoolTransactionHash, Model model, HttpServletRequest request) {
+        //////// GDPR Cookies Notice ////////
+        ArrayList<WebAlert> alerts = new ArrayList<>();
+        HttpSession session = request.getSession();
+        if(session.getAttribute("bAcceptCookies") == null) {
+            alerts.add(new WebAlert("This website uses cookies. You can configure them here: ", WebAlert.AlertClasses.Warning, "<a class=\"btn btn-success btn-sm\" href=\"/enablecookies\">Allow</a><a class=\"btn btn-danger btn-sm\" href=\"/disablecookies\">Deny</a>"));
+        } else {
+            if(!((boolean) session.getAttribute("bAcceptCookies"))) {
+                return "redirect:/disablecookies";
+            }
+        }
+        /////////////////////////////////////
+
         List<Transaction> mempool = BlockChain.get().getMempool();
 
         if(MempoolTransactionHash != null) {
@@ -52,7 +66,7 @@ public class MempoolController {
         } else {
             model.addAttribute("mempool", mempool.subList(0,Math.min(mempool.size()-1,50)));
         }*/
-
+        model.addAttribute("alerts", alerts);
         return "mempool";
     }
 
