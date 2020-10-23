@@ -19,7 +19,10 @@
         <h1>Transaction</h1>
         <span th:text="${transactionHash}"/><br/><br/>
         <!--<p class="lead"><span style="font-weight: bold" th:text="${#strings.substring(blockHash,0,(block.Header.DifficultyTarget*(4.0/3.0)))}"/><span th:text="${#strings.substring(blockHash,(block.Header.DifficultyTarget*(4.0/3.0)))}"/></p>-->
-        <a class="btn btn-primary" th:href="@{/block(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.getHash())})}" href="#" role="button"><img src="/icons/box.svg" alt="Block"> Go to Block</a>
+        <a class="btn btn-primary" th:href="@{/block(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.getHash())})}" href="#" role="button">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-box" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
+            </svg> Go to Block</a>
         <!-- <a class="btn btn-primary" th:href="@{/block(height=${T(Math).max(block.Header.BlockHeight - 1, 0)})}" href="#" role="button">Previous</a><a class="btn btn-primary" th:href="@{/block(height=${T(Math).min(block.Header.BlockHeight + 1, T(com.bradyrussell.uiscoin.blockchain.BlockChain).Storage.BlockHeight)})}" href="#" role="button">Next</a>-->
         <p class="lead" th:if="${bIsCoinbaseTransaction}">Coinbase Transaction</p>
 
@@ -35,7 +38,10 @@
                  <a class="list-group-item list-group-item-action"
                     th:classappend="${(it.index == -1 ? 'list-group-item-primary':'list-group-item-info') + ' ' + (bIsCoinbaseTransaction ? 'disabled':'')}"
                     th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.InputHash)})}">
-                     <img src="icons/play-fill.svg" alt="Input"/>
+
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-play-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+</svg>
                      <span th:text="'Input ' + ${it.index} + ': ' "/>
                      <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.InputHash) + ' Index: '+ input.IndexNumber}"/>
                     <!--<span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins()} + ' UISCoin)'"/>-->
@@ -43,7 +49,11 @@
                  <a class="list-group-item list-group-item-action"
                                      th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}"
                                      th:href="@{/script(script=${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.UnlockingScript)})}">
-                     <img src="icons/code-square.svg" alt="Input"/>
+
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-code-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+  <path fill-rule="evenodd" d="M6.854 4.646a.5.5 0 0 1 0 .708L4.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0zm2.292 0a.5.5 0 0 0 0 .708L11.793 8l-2.647 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708 0z"/>
+</svg>
                      <span th:text="'Input ' + ${it.index} + ' Unlocking Script: ' "/>
                      <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.UnlockingScript)}"/>
 
@@ -64,21 +74,31 @@
                  <a class="list-group-item list-group-item-action"
                     th:classappend="${(it.index == -1 ? 'list-group-item-primary':'list-group-item-info') + ' ' + (unspent.get(it.index) ? 'disabled':'')}"
                     href="#">
-                     <img src="icons/play.svg" alt="Output"/>
+
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-play" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M10.804 8L5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+</svg>
                      <span th:text="'Output ' + ${it.index} + ': ' "/>
                      <span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins(output.Amount)} + ' UISCoin)'"/>
                  </a>
                  <a class="list-group-item list-group-item-action"
                     th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}"
                     th:href="@{/script(script=${T(com.bradyrussell.uiscoin.Util).Base64Encode(output.LockingScript)})}">
-                     <img src="icons/code-square.svg" alt="Input"/>
+
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-code-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+  <path fill-rule="evenodd" d="M6.854 4.646a.5.5 0 0 1 0 .708L4.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0zm2.292 0a.5.5 0 0 0 0 .708L11.793 8l-2.647 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708 0z"/>
+</svg>
                      <span th:text="'Output ' + ${it.index} + ' Locking Script: ' "/>
                      <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(output.LockingScript)}"/>
                  </a>
                  <a th:if="${pubKeyHashes.get(it.index) != null}" class="list-group-item list-group-item-action"
                                      th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}"
                                      th:href="@{/address(address= ${pubKeyHashes.get(it.index)})}">
-                     <img src="icons/wallet2.svg" alt="Input"/>
+
+<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-wallet2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
+</svg>
                     <small  th:text="'Script Pays to UISCoin Address: ' + ${pubKeyHashes.get(it.index)} + ''"/>
                  </a>
              </span>

@@ -24,20 +24,36 @@
         <ul class="navbar-nav mr-auto justify-content-center">
             <li class="nav-item active">
                 <li class="nav-item">
-                    <a class="btn mr-1 btn-warning" th:href="@{/mempool}" href="#" role="button"><img src="/icons/hdd-rack.svg" alt="MemPool"> MemPool</a>
+                    <a class="btn mr-1 btn-warning" th:href="@{/mempool}" href="#" role="button">                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hdd-rack" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M14 10H2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1zM2 9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2H2z"/>
+                        <path d="M5 11.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-2 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                        <path fill-rule="evenodd" d="M14 3H2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM2 2a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z"/>
+                        <path d="M5 4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-2 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                        <path fill-rule="evenodd" d="M3 9V7h1v2H3zm9 0V7h1v2h-1z"/>
+                    </svg> MemPool</a>
                 </li>
             </li>
 
             <li class="nav-item">
-                <a class="btn mr-1 btn-success"  th:href="@{/block(height=0)}" href="#" role="button"><img src="/icons/box-arrow-down.svg" alt="Genesis Block"> Genesis Block</a>
+                <a class="btn mr-1 btn-success"  th:href="@{/block(height=0)}" href="#" role="button"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-box-arrow-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"/>
+                    <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z"/>
+                </svg> Genesis Block</a>
             </li>
 
             <li class="nav-item">
-                <a class="btn mr-1 btn-primary"  th:href="@{/block(height=${T(com.bradyrussell.uiscoin.blockchain.BlockChain).Storage.BlockHeight})}" href="#" role="button"><img src="/icons/box-arrow-up.svg" alt="Latest Block"> Latest Block</a>
+                <a class="btn mr-1 btn-primary"  th:href="@{/block(height=${T(com.bradyrussell.uiscoin.blockchain.BlockChain).Storage.BlockHeight})}" href="#" role="button">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-box-arrow-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1h-2z"/>
+                        <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 1.707V10.5a.5.5 0 0 1-1 0V1.707L5.354 3.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                    </svg> Latest Block</a>
             </li>
 
             <li class="nav-item">
-                <a class="disabled mr-1 btn btn-info" href="#" role="button"><img src="/icons/wallet.svg" alt="Wallet"> Web Wallet</a>
+                <a class="disabled mr-1 btn btn-info" href="#" role="button">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-wallet" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+                    </svg> Web Wallet</a>
             </li>
         </ul>
         <form class="form-inline mt-2 mt-md-0" action="/search" method="post">
