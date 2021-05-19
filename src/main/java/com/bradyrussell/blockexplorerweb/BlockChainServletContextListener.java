@@ -1,9 +1,9 @@
 package com.bradyrussell.blockexplorerweb;
 
-import com.bradyrussell.uiscoin.BlockChainStorageLevelDB;
 import com.bradyrussell.uiscoin.HTTP;
 import com.bradyrussell.uiscoin.MagicBytes;
 import com.bradyrussell.uiscoin.blockchain.BlockChain;
+import com.bradyrussell.uiscoin.blockchain.BlockChainStorageFile;
 import com.bradyrussell.uiscoin.blockchain.exception.InvalidBlockException;
 import com.bradyrussell.uiscoin.blockchain.exception.NoSuchBlockException;
 import com.bradyrussell.uiscoin.blockchain.exception.NoSuchTransactionException;
@@ -38,17 +38,21 @@ public class BlockChainServletContextListener implements ServletContextListener 
     public void contextInitialized(ServletContextEvent event) {
         System.out.println("CONTEXT INITIALIZED - OPENING BLOCKCHAIN");
 
-        BlockChain.Storage = new BlockChainStorageLevelDB();
+        BlockChain.Storage = new BlockChainStorageFile();
         BlockChain.get().open();
 
         uisCoinNode = new Node(MagicBytes.ProtocolVersion.Value);
 
-        SyncBlockChain();
+        try {
+            SyncBlockChain();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //uisCoinNode.Start(); // make configurable whether to run a server or not
     }
 
-    private static void SyncBlockChain() {
+    private static void SyncBlockChain() throws IOException {
 
         System.out.println("Starting node with " + SetupPeers(uisCoinNode) + " peers.");
 
@@ -111,7 +115,7 @@ public class BlockChainServletContextListener implements ServletContextListener 
         }
     }
 
-    private static int SetupPeers(Node node) {
+    private static int SetupPeers(Node node) throws IOException {
         List<String> connected = new ArrayList<>();
 
         if (Files.exists(BlockChainServletContextListener.peerlist)) {

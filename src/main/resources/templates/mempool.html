@@ -16,14 +16,14 @@
     <!-- end alerts -->
 
     <div class="jumbotron">
-        <h1 th:text="${mempoolTransaction == null ? 'MemPool' : 'MemPool Transaction '+ T(com.bradyrussell.uiscoin.Util).Base64Encode(mempoolTransaction.getHash())}"/>
+        <h1 th:text="${mempoolTransaction == null ? 'MemPool' : 'MemPool Transaction '+ T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(mempoolTransaction.getHash())}"/>
         <div th:if="${mempoolTransaction == null}">
             <p class="lead" >There are <span th:text="${mempool.size()}"/> pending transactions in the MemPool.</p>
             <div class="list-group">
-                <a th:each="tsxn, it : ${mempool}" class="list-group-item list-group-item-action" th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-info'}" th:href="@{/mempool(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())})}" >
+                <a th:each="tsxn, it : ${mempool}" class="list-group-item list-group-item-action" th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-info'}" th:href="@{/mempool(hash=${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(tsxn.getHash())})}" >
                     <img src="icons/hourglass-split.svg" alt="Output"/>
                     <span th:text="'Pending Transaction ' + ${it.index} + ': ' "/>
-                    <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())}"/>
+                    <small th:text="${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(tsxn.getHash())}"/>
                     <span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins(tsxn.outputTotal)} + ' UISCoin)'"/>
                 </a>
             </div>
@@ -42,18 +42,18 @@
              <span th:each="input, it : ${mempoolTransaction.Inputs}">
                  <a class="list-group-item list-group-item-action"
                     th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}"
-                    th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.InputHash)})}">
+                    th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(input.InputHash)})}">
                      <img src="icons/play-fill.svg" alt="Input"/>
                      <span th:text="'Input ' + ${it.index} + ': ' "/>
-                     <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.InputHash) + ' Index: '+ input.IndexNumber}"/>
+                     <small th:text="${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(input.InputHash) + ' Index: '+ input.IndexNumber}"/>
                      <!--<span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins()} + ' UISCoin)'"/>-->
                  </a>
                  <a class="list-group-item list-group-item-action"
                     th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}"
-                    th:href="@{/script(script=${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.UnlockingScript)})}">
+                    th:href="@{/script(script=${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(input.UnlockingScript)})}">
                      <img src="icons/code-square.svg" alt="Input"/>
                      <span th:text="'Input ' + ${it.index} + ' Unlocking Script: ' "/>
-                     <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(input.UnlockingScript)}"/>
+                     <small th:text="${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(input.UnlockingScript)}"/>
 
                  </a>
              </span>
@@ -71,10 +71,10 @@
                  </a>
                  <a class="list-group-item list-group-item-action"
                     th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}"
-                    th:href="@{/script(script=${T(com.bradyrussell.uiscoin.Util).Base64Encode(output.LockingScript)})}">
+                    th:href="@{/script(script=${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(output.LockingScript)})}">
                      <img src="icons/code-square.svg" alt="Input"/>
                      <span th:text="'Output ' + ${it.index} + ' Locking Script: ' "/>
-                     <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(output.LockingScript)}"/>
+                     <small th:text="${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(output.LockingScript)}"/>
                  </a>
                  <a th:if="${pubKeyHashes.get(it.index) != null}" class="list-group-item list-group-item-action"
                     th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-info'}"

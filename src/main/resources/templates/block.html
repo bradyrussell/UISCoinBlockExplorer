@@ -21,13 +21,13 @@
 
         <a class="btn btn-primary" th:href="@{/block(height=${T(Math).max(block.Header.BlockHeight - 1, 0)})}" href="#" role="button">Previous</a><a class="btn btn-primary" th:href="@{/block(height=${T(Math).min(block.Header.BlockHeight + 1, T(com.bradyrussell.uiscoin.blockchain.BlockChain).Storage.BlockHeight)})}" href="#" role="button">Next</a>
         <p class="lead" >Time: <small th:text="${block.Header.Time} + ' (' + ${#dates.format(block.Header.Time*1000)} + ')'"/> </p>
-        <p class="lead">Previous Block: <small><span th:if="${block.Header.BlockHeight == 0}" th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashPreviousBlock) + ' (Not a real block)'}"/> <a th:unless="${block.Header.BlockHeight == 0}" th:href="@{/block(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashPreviousBlock)})}" th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashPreviousBlock)}" /></small> </p>
-        <p class="lead" >Merkle Root: <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashMerkleRoot)}"/> </p>
+        <p class="lead">Previous Block: <small><span th:if="${block.Header.BlockHeight == 0}" th:text="${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(block.Header.HashPreviousBlock) + ' (Not a real block)'}"/> <a th:unless="${block.Header.BlockHeight == 0}" th:href="@{/block(hash=${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(block.Header.HashPreviousBlock)})}" th:text="${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(block.Header.HashPreviousBlock)}" /></small> </p>
+        <p class="lead" >Merkle Root: <small th:text="${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(block.Header.HashMerkleRoot)}"/> </p>
         <p class="lead" >Difficulty Target: <small th:text="${block.Header.DifficultyTarget} + ' bytes (' + ${#conversions.convert(block.Header.DifficultyTarget*(4.0/3.0), 'Integer')} + ' characters)'"/> </p>
         <p class="lead" >Nonce: <small th:text="${block.Header.Nonce}"/> </p>
         <p class="lead" >This block contains <span th:text="${block.Transactions.size()}"/> transaction<span th:if="${block.Transactions.size()>1}">s</span>:</p>
         <div class="list-group">
-            <a th:each="tsxn, it : ${block.Transactions}" class="list-group-item list-group-item-action" th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-info'}" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())})}" >
+            <a th:each="tsxn, it : ${block.Transactions}" class="list-group-item list-group-item-action" th:classappend="${it.index == 0 ? 'list-group-item-primary':'list-group-item-info'}" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(tsxn.getHash())})}" >
 
                 <svg th:if="${it.index==0}" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cash-stack" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M14 3H1a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1h-1z"/>
@@ -42,7 +42,7 @@
                 </svg>
 
                 <span th:text="'Transaction ' + ${it.index} + ': ' "/>
-                <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())}"/>
+                <small th:text="${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(tsxn.getHash())}"/>
                 <span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins(tsxn.outputTotal)} + ' UISCoin)'"/>
             </a>
     <!--        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">This is a secondary list group item</a>

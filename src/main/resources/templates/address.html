@@ -26,7 +26,7 @@
             <a th:each="utxo, it : ${utxos}" class="list-group-item list-group-item-action" th:classappend="${it.index == -1 ? 'list-group-item-primary':'list-group-item-info'}" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(utxo.TransactionHash)})}" >
                 <img src="icons/play.svg" alt="Output"/>
                 <span th:text="'UTXO ' + ${it.index} + ': ' "/>
-                <small th:text="${T(com.bradyrussell.uiscoin.Util).Base64Encode(utxo.TransactionHash)}"/>
+                <small th:text="${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(utxo.TransactionHash)}"/>
                 <small th:text="${' Index '+utxo.Index}"/>
                 <span th:text="' (' + ${T(com.bradyrussell.uiscoin.Conversions).SatoshisToCoins(utxo.Amount)} + ' UISCoin)'"/>
             </a>

@@ -1,12 +1,11 @@
 package com.bradyrussell.blockexplorerweb;
 
-import com.bradyrussell.uiscoin.Util;
+import com.bradyrussell.uiscoin.BytesUtil;
 import com.bradyrussell.uiscoin.block.Block;
 import com.bradyrussell.uiscoin.blockchain.BlockChain;
 import com.bradyrussell.uiscoin.blockchain.exception.NoSuchBlockException;
 import com.bradyrussell.uiscoin.blockchain.exception.NoSuchTransactionException;
 import com.bradyrussell.uiscoin.transaction.Transaction;
-import com.bradyrussell.uiscoin.transaction.TransactionInput;
 import com.bradyrussell.uiscoin.transaction.TransactionOutput;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.concurrent.BlockingQueue;
 
 @Controller
 public class TransactionController {
@@ -40,7 +38,7 @@ public class TransactionController {
 
         Transaction transaction = null;
         if (TransactionHash != null) {
-            byte[] transactionHash = Util.Base64Decode(TransactionHash);
+            byte[] transactionHash = BytesUtil.Base64Decode(TransactionHash);
             if (transactionHash.length == 64) {
                 try {
                     transaction = BlockChain.get().getTransaction(transactionHash);
@@ -83,7 +81,7 @@ public class TransactionController {
             model.addAttribute("transaction", transaction);
 
             model.addAttribute("transactionDate", new Date(transaction.TimeStamp));
-            model.addAttribute("transactionHash", Util.Base64Encode(transaction.getHash()));
+            model.addAttribute("transactionHash", BytesUtil.Base64Encode(transaction.getHash()));
 
         } else {
             model.addAttribute("alerts", Collections.singletonList(new WebAlert("This is not a valid transaction!", WebAlert.AlertClasses.Danger)));

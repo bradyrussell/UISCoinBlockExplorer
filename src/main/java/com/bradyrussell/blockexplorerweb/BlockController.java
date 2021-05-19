@@ -1,6 +1,6 @@
 package com.bradyrussell.blockexplorerweb;
 
-import com.bradyrussell.uiscoin.Util;
+import com.bradyrussell.uiscoin.BytesUtil;
 import com.bradyrussell.uiscoin.block.Block;
 import com.bradyrussell.uiscoin.blockchain.BlockChain;
 import com.bradyrussell.uiscoin.blockchain.exception.NoSuchBlockException;
@@ -47,7 +47,7 @@ public class BlockController {
 			}
 		}
 		else {
-			byte[] blockHash = Util.Base64Decode(BlockHash);
+			byte[] blockHash = BytesUtil.Base64Decode(BlockHash);
 			if (blockHash.length == 64) {
 				try {
 					block = BlockChain.get().getBlock(blockHash);
@@ -60,7 +60,7 @@ public class BlockController {
 		if(block != null) {
 			model.addAttribute("block", block);
 			model.addAttribute("blockDate", new Date(block.Header.Time));
-			model.addAttribute("blockHash",Util.Base64Encode(block.Header.getHash()));
+			model.addAttribute("blockHash", BytesUtil.Base64Encode(block.Header.getHash()));
 		} else {
 			model.addAttribute("alerts", Collections.singletonList(new WebAlert("This is not a valid block!", WebAlert.AlertClasses.Danger)));
 		}

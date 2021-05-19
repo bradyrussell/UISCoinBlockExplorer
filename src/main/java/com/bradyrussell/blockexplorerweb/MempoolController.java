@@ -1,7 +1,6 @@
 package com.bradyrussell.blockexplorerweb;
 
-import com.bradyrussell.uiscoin.Util;
-import com.bradyrussell.uiscoin.address.UISCoinAddress;
+import com.bradyrussell.uiscoin.BytesUtil;
 import com.bradyrussell.uiscoin.blockchain.BlockChain;
 import com.bradyrussell.uiscoin.transaction.Transaction;
 import com.bradyrussell.uiscoin.transaction.TransactionOutput;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -38,7 +36,7 @@ public class MempoolController {
 
         if(MempoolTransactionHash != null) {
             for (Transaction transaction : mempool) {
-                if (Util.Base64Encode(transaction.getHash()).equals(MempoolTransactionHash)) {
+                if (BytesUtil.Base64Encode(transaction.getHash()).equals(MempoolTransactionHash)) {
                     model.addAttribute("mempoolTransaction", transaction);
 
                     ArrayList<String> pubKeyHashes = new ArrayList<>();
@@ -51,7 +49,7 @@ public class MempoolController {
             }
             if(!model.containsAttribute("mempoolTransaction")) {
                 try {
-                    if (BlockChain.get().getTransaction(Util.Base64Decode(MempoolTransactionHash)) != null) {
+                    if (BlockChain.get().getTransaction(BytesUtil.Base64Decode(MempoolTransactionHash)) != null) {
                         model.addAttribute("alerts", new WebAlert("This transaction is no longer in the MemPool because it was included in a block!", WebAlert.AlertClasses.Info, "<a class=\"btn btn-primary btn-sm\" href=\"" + "/transaction?hash=" + MempoolTransactionHash + "\" role=\"button\"><img src=\"/icons/cash.svg\" alt=\"Block\"> Go to Transaction</a>"));
                     }
                 } catch (Exception e) {

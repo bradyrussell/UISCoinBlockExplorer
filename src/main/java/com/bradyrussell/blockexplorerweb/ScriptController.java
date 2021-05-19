@@ -1,9 +1,8 @@
 package com.bradyrussell.blockexplorerweb;
 
-import com.bradyrussell.uiscoin.Util;
-import com.bradyrussell.uiscoin.blockchain.BlockChain;
+import com.bradyrussell.uiscoin.BytesUtil;
+
 import com.bradyrussell.uiscoin.script.ScriptBuilder;
-import com.bradyrussell.uiscoin.transaction.Transaction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,7 @@ public class ScriptController {
 		}
 		/////////////////////////////////////
 
-		byte[] Script = Util.Base64Decode(ScriptEncoded);
+		byte[] Script = BytesUtil.Base64Decode(ScriptEncoded);
 		String ScriptAsText = new ScriptBuilder(Script.length).data(Script).toText();
 
 		if(ScriptAsText != null) {

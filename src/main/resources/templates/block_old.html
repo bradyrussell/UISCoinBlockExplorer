@@ -9,13 +9,13 @@
 <div th:if="${block != null}">
 <p th:text="'Height: ' + ${block.Header.BlockHeight} + ''" />
     <p th:text="'Time: ' + ${block.Header.Time} + ''" />
-    <p th:text="'PrevBlock: ' + ${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashPreviousBlock)} + ''" />
-    <p th:text="'MerkleRoot: ' + ${T(com.bradyrussell.uiscoin.Util).Base64Encode(block.Header.HashMerkleRoot)} + ''" />
+    <p th:text="'PrevBlock: ' + ${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(block.Header.HashPreviousBlock)} + ''" />
+    <p th:text="'MerkleRoot: ' + ${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(block.Header.HashMerkleRoot)} + ''" />
     <p th:text="'Diff: ' + ${block.Header.DifficultyTarget} + ''" />
     <p th:text="'Nonce: ' + ${block.Header.Nonce} + ''" />
 
     <div th:each="tsxn, it : ${block.Transactions}">
-        <a th:text="'Transaction ' + ${it.index} + ' :' + ${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())} + ''" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.Util).Base64Encode(tsxn.getHash())})}"></a><br/>
+        <a th:text="'Transaction ' + ${it.index} + ' :' + ${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(tsxn.getHash())} + ''" th:href="@{/transaction(hash=${T(com.bradyrussell.uiscoin.BytesUtil).Base64Encode(tsxn.getHash())})}"></a><br/>
     </div>
 </div>
 </body>
